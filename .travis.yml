@@ -1,15 +1,29 @@
-sudo: false
-
 language: node_js
 
 node_js:
   - "8"
-  - "9"
+  - "10"
+  - "12"
+  - "node"
+
+sudo: false
+
+install:
+  - "npm install"
+  - "npm install @hapi/hapi@$HAPI_VERSION"
+
+env:
+  - HAPI_VERSION="18"
+
+os:
+  - "linux"
 
 services:
   - redis
+  - docker
 
 before_script:
+  - docker-compose up -d
   - redis-server --port 6378 --requirepass secret &
   - redis-server --port 6377 --unixsocket /tmp/redis.sock &
   - sleep 2
